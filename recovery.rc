@@ -187,8 +187,8 @@ on boot
 
 ## Daemon processes to be run by init.
 ##
-service console /system/bin/sh
-    console
+#service console /system/bin/sh
+#    console
 
 # P1_VZW
 #SDCARD is used for FOTA update in recovery mode.
@@ -196,7 +196,7 @@ service console /system/bin/sh
 #service vold /system/bin/vold
 #    socket vold stream 0660 root mount
 
-service recovery /sbin/recovery
+service recovery /sbin/start_recovery
     oneshot
 
 # adbd is controlled by the persist.service.adb.enable system property
