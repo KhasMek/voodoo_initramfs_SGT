@@ -650,13 +650,13 @@ service keystore /system/bin/keystore /data/misc/keystore
     group keystore
     socket keystore stream 666
 
- to enable wifi
+# to enable wifi
 on property:init.svc.wpa_supplicant=stopped
   stop dhcpcd
 
 on property:init.svc.dhcpcd=stopped
   dhcpcd -k eth0
- end of wifi
+# end of wifi
 
 service tvout /system/bin/tvoutserver
     user system
