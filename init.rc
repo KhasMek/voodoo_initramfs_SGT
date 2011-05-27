@@ -217,13 +217,33 @@ mknod 0666 /dev/ttyCDMA0 c 240 1
     mkdir /data/misc/vpn/profiles 0770 system system
     mkdir /data/misc/radio 0771 radio radio
 
-    mkdir /data/misc/wifi 0777 wifi wifi
-    chmod 0777 /data/misc/wifi
-    mkdir /data/misc/wifi/sockets 0777 wifi wifi
-    chmod 0777 /data/misc/wifi/wpa_supplicant.conf
-
-    mkdir /data/misc/dhcp 0777 dhcp dhcp
+    # WiFi
+#wpa_supplicant.conf ends up here
     mkdir /data/wifi 0777 wifi wifi
+    mkdir /data/misc/wifi 0777 wifi wifi
+    chown wifi wifi /data/misc/wifi
+    chmod 0777 /data/misc/wifi
+
+#dhcp needs to be here
+    mkdir /data/misc/dhcp 0777 dhcp dhcp
+    chown dhcp dhcp /data/misc/dhcp
+    chmod 0777 /data/misc/dhcp
+
+#sockets end up here hardcoded in wpa_ctrl.c
+    mkdir /data/misc/wifi/sockets 0777 wifi wifi
+    chown wifi wifi /data/misc/wifi/sockets
+    chmod 07777 /data/misc/wifi/sockets
+
+#wpa_supplicant dir is hardcoded in wifi.c in legacy_hardware
+    mkdir /data/system 0775 system system
+    mkdir /data/system/wpa_supplicant 0777 wifi wifi
+    chown wifi wifi /data/system/wpa_supplicant
+    chmod 0777 /data/system/wpa_supplicant
+
+#protect the original conf?
+    chmod 0664 /system/etc/wifi/wpa_supplicant.conf
+# End WiFi
+
     mkdir /data/local 0771 shell shell
     mkdir /data/local/tmp 0771 shell shell
     mkdir /data/data 0771 system system
@@ -630,13 +650,13 @@ service keystore /system/bin/keystore /data/misc/keystore
     group keystore
     socket keystore stream 666
 
-# to enable wifi
+ to enable wifi
 on property:init.svc.wpa_supplicant=stopped
   stop dhcpcd
 
 on property:init.svc.dhcpcd=stopped
   dhcpcd -k eth0
-# end of wifi
+ end of wifi
 
 service tvout /system/bin/tvoutserver
     user system
